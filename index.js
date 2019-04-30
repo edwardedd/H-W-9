@@ -15,6 +15,35 @@ const getUsers = () => {
 	})
 };
 
+const deleteUser = async (userId) => {
+	try {
+	fetch(API + 'users/' + userId, {method: 'DELETE'});
+	userElement.remove();
+} catch(err){
+	console.log('couldnt delete user',err);
+}
+}
+
+const createUser = () =>{
+	
+		fetch(API + 'users/', {
+			method: 'POST',
+			body: JSON.stringify({name: name,age: age}),
+		}).then(res => {
+			return (res.json());
+		}).catch(err => {
+			console.log(`Can't create user`, err);
+		})	
+}
+
+const createCard = () => {
+	const name = document.querySelector(`#name`).value;
+	const age = document.querySelector(`#age`).value;
+	const user = {name, age};
+	users.push(user);
+	renderUsers();
+}
+
 const renderUsers = (users) => {
 	const container = document.querySelector('.users');
 
@@ -25,10 +54,19 @@ const renderUsers = (users) => {
 		<h4>${item.name}</h4>
 		<h5>${item.name}</h5>
 		`;
+		const removeButton = document.createElement('button');
+		removeButton.classList.add('user_remove');
+		removeButton.textContent = 'X';
+		removeButton.addEventListener('click', () =>{
+			deleteUser(item.id)
+		})
+		userElement.append(removeButton);
 		container.append(userElement);
 	})
 
 }
+
+
 
 const loadUsers = async () => {
 	const users = await getUsers();
