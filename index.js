@@ -24,17 +24,16 @@ const deleteUser = async (userId) => {
 }
 }
 
-const createUser = () =>{
-	
-		fetch(API + 'users/', {
-			method: 'POST',
-			body: JSON.stringify({name: name,age: age}),
-		}).then(res => {
-			return (res.json());
-		}).catch(err => {
-			console.log(`Can't create user`, err);
-		})	
-}
+// const createUser = () =>{	
+// 	fetch(API + 'users/', {
+// 		method: 'POST',
+// 		body: JSON.stringify({name: name,age: age}),
+// 	}).then(res => {
+// 		return (res.json());
+// 	}).catch(err => {
+// 		console.log(`Can't create user`, err);
+// 	})	
+// }
 
 const createCard = () => {
 	const name = document.querySelector(`#name`).value;
@@ -63,10 +62,7 @@ const renderUsers = (users) => {
 		userElement.append(removeButton);
 		container.append(userElement);
 	})
-
 }
-
-
 
 const loadUsers = async () => {
 	const users = await getUsers();
@@ -74,9 +70,34 @@ const loadUsers = async () => {
 	renderUsers(users);
 };
 
+const createUser = () => {
+	const name = document.querySelector('#name').value;
+	const age = document.querySelector('#age').value;
+	 	fetch(API + 'users/', {
+		method: 'POST',
+		body: JSON.stringify({name: name, age: age}),
+	}).then(res => {
+		return (res.json());
+	}).then(data => {
+		const user = {
+			name,
+			age,
+			id: data.id
+		}
+		renderUsers([user])
+	}).catch(err => {
+		console.log(`Can't create user`, err);
+	})	
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
 	const loadBtn = document.querySelector('.load');
 	loadBtn.addEventListener('click',loadUsers);
+
+	const createBtn = document.querySelector('.create_user');
+	createBtn.addEventListener('click', createUser)
+	
 })
 
 
