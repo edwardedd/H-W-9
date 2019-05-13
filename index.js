@@ -8,6 +8,7 @@ const getUsers = () => {
 		return res.json();
 	}).then(user => {
     return user.data;
+
     })
 	.catch(err => {
 		console.log('couldnt get users', err);
@@ -73,6 +74,8 @@ const loadUsers = async () => {
 const createUser = () => {
 	const name = document.querySelector('#name').value;
 	const age = document.querySelector('#age').value;
+	console.log(name)
+	console.log(age)
 	 	fetch(API + 'users/', {
 		method: 'POST',
 		body: JSON.stringify({name: name, age: age}),
