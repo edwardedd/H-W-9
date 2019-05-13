@@ -16,13 +16,15 @@ const getUsers = () => {
 	})
 };
 
-const deleteUser = async (userId) => {
+const deleteUser = async (userId, userElement) => {
 	try {
-	fetch(API + 'users/' + userId, {method: 'DELETE'});
-	userElement.remove();
-} catch(err){
-	console.log('couldnt delete user',err);
-}
+		const res = await fetch(API + 'users/' + userId, {method: 'DELETE'});
+		console.log(res)
+		userElement.remove();
+
+	} catch(err){
+		console.log('couldnt delete user',err);
+	}
 }
 
 // const createUser = () =>{	
@@ -57,8 +59,9 @@ const renderUsers = (users) => {
 		const removeButton = document.createElement('button');
 		removeButton.classList.add('user_remove');
 		removeButton.textContent = 'X';
+		removeButton.type = 'button';
 		removeButton.addEventListener('click', () =>{
-			deleteUser(item.id)
+			deleteUser(item.id, userElement)
 		})
 		userElement.append(removeButton);
 		container.append(userElement);
@@ -74,6 +77,9 @@ const loadUsers = async () => {
 const createUser = () => {
 	const name = document.querySelector('#name').value;
 	const age = document.querySelector('#age').value;
+	if ((name.length === 0) || (age.length === 0)) {
+		return;
+	}
 	console.log(name)
 	console.log(age)
 	 	fetch(API + 'users/', {
